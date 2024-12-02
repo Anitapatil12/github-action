@@ -1,0 +1,20 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Main stack template
+
+Parameters:
+  VpcCIDR:
+    Type: String
+  Name:
+    Type: String
+  EnvironmentName:
+    Type: String
+
+Resources:
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      Tags:
+        - Key: Name
+          Value: !Sub '$(Name)-Vpc-${EnvironmentName}'
+  
