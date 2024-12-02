@@ -8,10 +8,10 @@ Parameters:
     Type: String
 
 Resources:
-  Type: AWS::EC2::VPC
+  VPC:
+    Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
           Value: !Ref VpcName
-  
