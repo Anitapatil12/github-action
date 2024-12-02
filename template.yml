@@ -4,17 +4,14 @@ Description: Main stack template
 Parameters:
   VpcCIDR:
     Type: String
-  Name:
-    Type: String
-  EnvironmentName:
+  VpcName:
     Type: String
 
 Resources:
-  VPC:
-    Type: AWS::EC2::VPC
+  Type: AWS::EC2::VPC
     Properties:
       CidrBlock: !Ref VpcCIDR
       Tags:
         - Key: Name
-          Value: !Sub '$(Name)-Vpc-${EnvironmentName}'
+          Value: !Ref VpcName
   
