@@ -3,10 +3,10 @@ name: "CodeQL Analysis"
 on:
   push:
     branches:
-      - main  # Trigger on push to main branch
+      - dev  # Trigger on push to main branch
   pull_request:
     branches:
-      - main  # Trigger on pull request to main branch
+      - dev  # Trigger on pull request to main branch
 
 jobs:
   analyze:
