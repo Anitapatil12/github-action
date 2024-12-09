@@ -9,7 +9,7 @@ Parameters:
 
 Resources:
   VPC:
-    Type: AWS::EC2::VPC
+    Type: AWS::EC2::
     Properties:
       CidrBlock: !Ref VpcCIDR
       Tags:
