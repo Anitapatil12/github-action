@@ -33,7 +33,7 @@ jobs:
 
       - name: Build the project
         run: |
-          pytest > result.log; tail -n 10 result.log
+          pytest --maxfail=1 --disable-warnings -q
 
       - name: Perform CodeQL analysis
         uses: github/codeql-action/analyze@v2
