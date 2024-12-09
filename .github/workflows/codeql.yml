@@ -33,7 +33,6 @@ jobs:
 
       - name: Build the project
         run: |
-          # Run tests with pytest (optional)
           pytest > result.log; tail -n 10 result.log
 
       - name: Perform CodeQL analysis
