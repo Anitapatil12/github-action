@@ -2,7 +2,8 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Main stack template
 
 Parameters:
-
+  newusername:
+    Type: String
   username:
     Type: String
   Rolename:
@@ -14,6 +15,13 @@ Resources:
     Type: 'AWS::IAM::User'
     Properties:
       UserName: !Ref username
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  mynewUser:
+    Type: 'AWS::IAM::User'
+    Properties:
+      UserName: !Ref newusername
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
 

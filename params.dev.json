@@ -1,4 +1,5 @@
 [
   {"ParameterKey": "username", "ParameterValue": "anitapatil"},
-  {"ParameterKey": "Rolename", "ParameterValue": "sample-role"}
+  {"ParameterKey": "Rolename", "ParameterValue": "sample-role"},
+  {"ParameterKey": "newusername", "ParameterValue": "anitajanba"}
 ]
