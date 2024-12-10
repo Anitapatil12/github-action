@@ -1,4 +1,5 @@
 [
   {"ParameterKey": "VpcCIDR", "ParameterValue": "10.0.0.0/16"},
-  {"ParameterKey":"VpcName", "ParameterValue": "github-demo"}
+  {"ParameterKey":"VpcName", "ParameterValue": "github-demo"},
+  {"ParameterKey": "BucketName", "ParameterValue": "my-s3-bucket"}
 ]
