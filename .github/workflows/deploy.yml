@@ -1,4 +1,4 @@
-name: Deploy React App to CloudFormation
+name: Deploy sample resource to CloudFormation
 
 on:
   push:
