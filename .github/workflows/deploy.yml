@@ -3,7 +3,6 @@ name: Deploy sample resource to CloudFormation
 on:
   push:
     branches:
-      - main
       - dev
       - qa
 
@@ -11,9 +10,6 @@ jobs:
   cloudformation-deploy:
     name: Deploy Cloudformation
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
     - name: Checkout code
