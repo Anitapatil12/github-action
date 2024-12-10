@@ -17,19 +17,29 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
 
-  myRole:
+   MyRole:
     Type: 'AWS::IAM::Role'
     Properties: 
       RoleName: !Ref Rolename
       AssumeRolePolicyDocument:
-          Version: "2012-10-17" 
+        Version: "2012-10-17"
+        Statement:
+          - Effect: "Allow"
+            Principal:
+              Service: "ec2.amazonaws.com"
+            Action: "sts:AssumeRole"
       Policies:
         - PolicyName: inlineS3ReadOnlyPolicy
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
-              - Effect: Allow
+              - Effect: "Allow"
                 Action:
-                  - 's3:Get*'
-                  - 's3:List*'
-                Resource: '*'
+                  - "s3:Get*"
+                  - "s3:List*"
+                Resource: "*"
+
+Outputs:
+  RoleNameOutput:
+    Description: The name of the IAM role.
+    Value: !Ref MyRole
