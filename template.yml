@@ -7,6 +7,8 @@ Parameters:
     Type: String
   Rolename:
     Type: String
+  newusername:
+    Type: String
 
 Resources:
 
@@ -14,6 +16,13 @@ Resources:
     Type: 'AWS::IAM::User'
     Properties:
       UserName: !Ref username
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  myMyUser:
+    Type: 'AWS::IAM::User'
+    Properties:
+      UserName: !Ref newusername
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
 

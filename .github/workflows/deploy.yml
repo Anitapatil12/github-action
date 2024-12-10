@@ -21,12 +21,6 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }} 
 
-    - name: Install AWS cli
-      id: install-aws-cli
-      uses: unfor19/install-aws-cli-action@master
-    - run: |
-        aws --version
-
     - name: Set env BRANCH
       run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
  
