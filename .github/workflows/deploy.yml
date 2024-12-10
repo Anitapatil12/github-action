@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - dev
-      - qa
-      - main
 
 jobs:
   cloudformation-deploy:

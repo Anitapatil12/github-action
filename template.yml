@@ -2,11 +2,31 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Main stack template
 
 Parameters:
-  bucketname:
+  BucketName:
     Type: String
+    Description: Name of the S3 bucket
+    AllowedPattern: "^[a-z0-9.-]{3,63}$"
+    ConstraintDescription: Bucket name must be lowercase, 3-63 characters, and can include hyphens or dots.
+
+  AccessControl:
+    Type: String
+    Default: Private
+    AllowedValues:
+      - Private
+      - PublicRead
+      - PublicReadWrite
+      - AuthenticatedRead
+    Description: Access control for the S3 bucket.
 
 Resources:
-  DemoBucket:
+  S3Bucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Ref bucketname
+      BucketName: !Ref BucketName
+      AccessControl: !Ref AccessControl
+
+
+Outputs:
+  BucketNameOutput:
+    Description: The name of the S3 bucket
+    Value: !Ref S3Bucket
