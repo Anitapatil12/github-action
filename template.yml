@@ -4,9 +4,7 @@ Description: Main stack template
 Parameters:
   username:
     Type: String
-    Description: Name of the S3 bucket
-    AllowedPattern: "^[a-z0-9.-]$"
-    ConstraintDescription: Bucket name must be lowercase, 3-63 characters, and can include hyphens or dots.
+    Description: user name
 
 Resources:
   myUser:
