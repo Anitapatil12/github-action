@@ -17,7 +17,7 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
 
-   MyRole:
+  MyRole:
     Type: 'AWS::IAM::Role'
     Properties: 
       RoleName: !Ref Rolename
