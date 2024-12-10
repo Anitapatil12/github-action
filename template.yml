@@ -21,7 +21,8 @@ Resources:
     Type: 'AWS::IAM::Role'
     Properties: 
       RoleName: !Ref Rolename
-      AssumeRolePolicyDocument: 
+      AssumeRolePolicyDocument:
+          Version: "2012-10-17" 
       Policies:
         - PolicyName: inlineS3ReadOnlyPolicy
           PolicyDocument:
