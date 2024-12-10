@@ -2,16 +2,17 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Main stack template
 
 Parameters:
-  BucketName:
+  username:
     Type: String
     Description: Name of the S3 bucket
-    AllowedPattern: "^[a-z0-9.-]{3,63}$"
+    AllowedPattern: "^[a-z0-9.-]$"
     ConstraintDescription: Bucket name must be lowercase, 3-63 characters, and can include hyphens or dots.
 
 Resources:
-
-  MyS3Bucket:
-    Type: AWS::S3::Bucket
+  myUser:
+    Type: 'AWS::IAM::User'
     Properties:
-      BucketName: !Ref BucketName
+      UserName: !Ref username
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
 
