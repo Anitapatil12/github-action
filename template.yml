@@ -2,11 +2,33 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Main stack template
 
 Parameters:
-  bucketname:
+
+  username:
+    Type: String
+  Rolename:
     Type: String
 
 Resources:
-  DemoBucket:
-    Type: AWS::S3::Bucket
+
+  myUser:
+    Type: 'AWS::IAM::User'
     Properties:
-      BucketName: !Ref bucketname
+      UserName: !Ref username
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AdministratorAccess
+
+  myRole:
+    Type: 'AWS::IAM::Role'
+    Properties: 
+      RoleName: !Ref Rolename
+      AssumeRolePolicyDocument: 
+      Policies:
+        - PolicyName: inlineS3ReadOnlyPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:Get*'
+                  - 's3:List*'
+                Resource: '*'

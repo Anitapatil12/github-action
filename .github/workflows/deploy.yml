@@ -1,79 +1,74 @@
-name: Deploy VPC and IAM Role to CloudFormation (AWS) using GitHub Actions
+name: Deploy sample resource to CloudFormation
 
 on:
   push:
     branches:
       - dev
-      - qa
-      - main
 
 jobs:
   cloudformation-deploy:
-    name: Deploy CloudFormation
+    name: Deploy Cloudformation
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout Code
-      - name: Checkout Code
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-      # Step 2: Configure AWS Credentials
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v3
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ secrets.AWS_REGION }}
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }} 
 
-      # Step 3: Install AWS CLI
-      - name: Install AWS CLI
-        uses: unfor19/install-aws-cli-action@master
-      - run: aws --version
+    - name: Install AWS cli
+      id: install-aws-cli
+      uses: unfor19/install-aws-cli-action@master
+    - run: |
+        aws --version
 
-      # Step 4: Set Environment Variables
-      - name: Set Deployment Environment Variables
-        run: |
-          BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)
-          if [[ $BRANCH == 'main' ]]; then
-            echo "DEPLOYMENT_ENV=prod" >> $GITHUB_ENV
-            echo "STACK_NAME=prod-stack" >> $GITHUB_ENV
-          elif [[ $BRANCH == 'qa' ]]; then
-            echo "DEPLOYMENT_ENV=qa" >> $GITHUB_ENV
-            echo "STACK_NAME=qa-stack" >> $GITHUB_ENV
-          else
-            echo "DEPLOYMENT_ENV=dev" >> $GITHUB_ENV
-            echo "STACK_NAME=dev-stack" >> $GITHUB_ENV
-          fi
+    - name: Set env BRANCH
+      run: echo "BRANCH=$(echo $GITHUB_REF | cut -d'/' -f 3)" >> $GITHUB_ENV
+ 
+    - name: Set stack name and env
+      run: |
+         if [[ $BRANCH == 'master' || $BRANCH == 'main' ]]; then
+          echo "DEPLOYMENT_ENV=prod" >> "$GITHUB_ENV"
+          echo "STACK_NAME=prod-stack" >> "$GITHUB_ENV"
+         elif [[ $BRANCH == 'qa' ]]; then
+          echo "DEPLOYMENT_ENV=qa" >> "$GITHUB_ENV"
+          echo "STACK_NAME=qa-stack" >> "$GITHUB_ENV"
+         else
+          echo "DEPLOYMENT_ENV=dev" >> "$GITHUB_ENV"
+          echo "STACK_NAME=dev-demo" >> "$GITHUB_ENV"
+         fi
 
-      # Step 5: Print Variables
-      - name: Print Environment Variables
-        run: |
-          echo "Environment: ${{ env.DEPLOYMENT_ENV }}"
-          echo "Stack Name: ${{ env.STACK_NAME }}"
+    - name: Print all the variable parameters
+      run: |
+          echo "S3 Bucket arn : ${{ env.S3_BUCKET }}"
+          echo "Deployment Stack Name : ${{ env.STACK_NAME }}"
 
-      # Step 6: Install cfn-lint
-      - name: Install cfn-lint
-        run: pip install cfn-lint
+    - name: Prepare Parameter Overrides
+      id: prepare_params
+      run: |
+        params=$(cat ./params.${{ env.DEPLOYMENT_ENV }}.json | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | join(" ")')
+        echo "params=$params" >> $GITHUB_ENV
 
-      # Step 7: Validate CloudFormation Template
-      - name: Validate CloudFormation Template
-        run: |
-          cfn-lint --version
-          cfn-lint -t ./template.yml
+    - name: Install cfn-lint
+      run: pip install cfn-lint
+ 
+    - name: Print the CloudFormation Linter Version & Run Linter
+      run: |
+        cfn-lint --version
+        cfn-lint --ignore-checks W3011,W3002 -t ./template.yml
 
-      # Step 8: Prepare Parameter Overrides
-      - name: Prepare Parameter Overrides
-        id: prepare_params
-        run: |
-          params=$(cat ./params.${{ env.DEPLOYMENT_ENV }}.json | jq -r 'to_entries | map("\(.key)=\(.value|tostring)") | join(" ")')
-          echo "params=$params" >> $GITHUB_ENV
-
-      # Step 9: Deploy to CloudFormation
-      - name: Deploy to CloudFormation
-        run: |
-          aws cloudformation deploy \
-            --stack-name ${{ env.STACK_NAME }} \
-            --template-file ./template.yml \
-            --parameter-overrides ${{ env.params }} \
-            --capabilities CAPABILITY_NAMED_IAM CAPABILITY_IAM CAPABILITY_AUTO_EXPAND \
-            --no-fail-on-empty-changeset
+        
+    - name: Deploy to AWS Cloudformation
+      uses: aws-actions/aws-cloudformation-github-deploy@v1
+      with:
+        name: ${{ env.STACK_NAME }}
+        template:  ./template.yml
+        parameter-overrides: file://${{ github.workspace }}/params.${{ env.DEPLOYMENT_ENV }}.json
+        capabilities: CAPABILITY_IAM,CAPABILITY_AUTO_EXPAND, CAPABILITY_NAMED_IAM
+        no-fail-on-empty-changeset: "1"
+        
