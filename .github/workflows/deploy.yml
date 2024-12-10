@@ -26,9 +26,9 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
 
       # Step 3: Install AWS CLI
-      # - name: Install AWS CLI
-      #   uses: unfor19/install-aws-cli-action@master
-      # - run: aws --version
+      - name: Install AWS CLI
+        uses: unfor19/install-aws-cli-action@master
+      - run: aws --version
 
       # Step 4: Set Environment Variables
       - name: Set Deployment Environment Variables
