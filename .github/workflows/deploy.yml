@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-      - qa
 
 jobs:
   cloudformation-deploy:
@@ -48,8 +47,6 @@ jobs:
       run: |
           echo "S3 Bucket arn : ${{ env.S3_BUCKET }}"
           echo "Deployment Stack Name : ${{ env.STACK_NAME }}"
-
-   
 
     - name: Prepare Parameter Overrides
       id: prepare_params
