@@ -2,22 +2,16 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Main stack template
 
 Parameters:
-  BucketName:
+  VpcCIDR:
     Type: String
-    Description: Name of the S3 bucket
-    AllowedPattern: "^[a-z0-9.-]{3,63}$"
-    ConstraintDescription: Bucket name must be lowercase, 3-63 characters, and can include hyphens or dots.
-
-  
+  VpcName:
+    Type: String
 
 Resources:
-  S3Bucket:
-    Type: AWS::S3::Bucket
+  VPC:
+    Type: AWS::EC2::VPC
     Properties:
-      BucketName: !Ref BucketName
-
-
-Outputs:
-  BucketNameOutput:
-    Description: The name of the S3 bucket
-    Value: !Ref S3Bucket
+      CidrBlock: !Ref VpcCIDR
+      Tags:
+        - Key: Name
+          Value: !Ref VpcName
