@@ -22,13 +22,13 @@ Resources:
     Properties: 
       RoleName: !Ref Rolename
       AssumeRolePolicyDocument: 
-      Policies:
-        - PolicyName: inlineS3ReadOnlyPolicy
-          PolicyDocument:
-            Version: '2012-10-17'
-            Statement:
-              - Effect: Allow
-                Action:
-                  - 's3:Get*'
-                  - 's3:List*'
-                Resource: '*'
+        Policies:
+          - PolicyName: inlineS3ReadOnlyPolicy
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - 's3:Get*'
+                    - 's3:List*'
+                  Resource: '*'
