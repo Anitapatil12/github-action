@@ -7,8 +7,6 @@ Parameters:
     Type: String
   Rolename:
     Type: String
-  newusername:
-    Type: String
 
 Resources:
 
@@ -19,19 +17,12 @@ Resources:
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AdministratorAccess
 
-  myMyUser:
-    Type: 'AWS::IAM::User'
-    Properties:
-      UserName: !Ref newusername
-      ManagedPolicyArns:
-        - arn:aws:iam::aws:policy/AdministratorAccess
-
   myRole:
     Type: 'AWS::IAM::Role'
     Properties: 
       RoleName: !Ref Rolename
       AssumeRolePolicyDocument: 
-      Policies: 
+      Policies:
         - PolicyName: inlineS3ReadOnlyPolicy
           PolicyDocument:
             Version: '2012-10-17'
