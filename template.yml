@@ -2,16 +2,11 @@ AWSTemplateFormatVersion: '2010-09-09'
 Description: Main stack template
 
 Parameters:
-  VpcCIDR:
-    Type: String
-  VpcName:
+  bucketname:
     Type: String
 
 Resources:
-  VPC:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: !Ref VpcCIDR
-      Tags:
-        - Key: Name
-          Value: !Ref VpcName
+  DemoBucket:
+  Type: AWS::S3::Bucket
+  Properties:
+    BucketName: !Ref bucketname
