@@ -7,6 +7,6 @@ Parameters:
 
 Resources:
   DemoBucket:
-  Type: AWS::S3::Bucket
-  Properties:
-    BucketName: !Ref bucketname
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref bucketname
